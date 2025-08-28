@@ -11,11 +11,31 @@ const velocityX = 0.12
 const velocityY = 0.13
 const velocityZ = 0.9
 
-var w = canvas.width
-var h = canvas.height
+const w = canvas.width
+const h = canvas.height
 
 //
 
-ctx.strokeStyles = cubeColor
+ctx.strokeStyle = cubeColor
 ctx.lineWidth = w / 10
 ctx.lineCap = 'round'
+
+// cube
+
+const cx = w / 2
+const cy = h / 2
+const cz = 0
+const size = h / 2
+
+// animation
+
+var timeDelta,
+  timeLast = 0
+requestAnimationFrame(loop)
+
+function loop(timeNow) {
+  timeDelta = timeNow - timeLast
+  timeLast = timeNow
+
+  requestAnimationFrame(loop)
+}
