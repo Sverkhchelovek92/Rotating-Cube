@@ -7,9 +7,9 @@ ctx.fillRect(0, 0, canvas.width, canvas.height)
 // Some constants
 
 const cubeColor = '#d11f31'
-const velocityX = 0.12
-const velocityY = 0.13
-const velocityZ = 0.9
+const velocityX = 0.6
+const velocityY = 0.4
+const velocityZ = 0.5
 
 const w = canvas.width
 const h = canvas.height
@@ -75,6 +75,51 @@ function loop(timeNow) {
   timeLast = timeNow
 
   ctx.fillRect(0, 0, w, h)
+
+  // rotate z-axis
+
+  let angleZ = timeDelta * 0.001 * velocityZ
+
+  for (let v of vertices) {
+    let dx = v.x - cx
+    let dy = v.y - cy
+
+    let x = dx * Math.cos(angleZ) - dy * Math.sin(angleZ)
+    let y = dx * Math.sin(angleZ) + dy * Math.cos(angleZ)
+
+    v.x = x + cx
+    v.y = y + cy
+  }
+
+  // rotate x-axis
+
+  let angleX = timeDelta * 0.001 * velocityX
+
+  for (let v of vertices) {
+    let dy = v.y - cy
+    let dz = v.z - cz
+
+    let y = dy * Math.cos(angleX) - dz * Math.sin(angleX)
+    let z = dy * Math.sin(angleX) + dz * Math.cos(angleX)
+
+    v.y = y + cy
+    v.z = z + cz
+  }
+
+  // rotate y-axis
+
+  let angleY = timeDelta * 0.001 * velocityY
+
+  for (let v of vertices) {
+    let dx = v.x - cx
+    let dz = v.z - cz
+
+    let x = dx * Math.cos(angleY) - dz * Math.sin(angleY)
+    let z = dx * Math.sin(angleY) + dz * Math.cos(angleY)
+
+    v.x = x + cx
+    v.z = z + cz
+  }
 
   for (let edge of edges) {
     ctx.beginPath()
