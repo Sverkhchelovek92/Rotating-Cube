@@ -4,9 +4,11 @@ const ctx = canvas.getContext('2d')
 ctx.fillStyle = '#1f1f21'
 ctx.fillRect(0, 0, canvas.width, canvas.height)
 
+const colorBtn = document.querySelector('.color-btn')
+
 // Some constants
 
-const cubeColor = '#d11f31'
+let cubeColor = '#d11f31'
 const velocityX = 0.6
 const velocityY = 0.4
 const velocityZ = 0.5
@@ -130,3 +132,19 @@ function loop(timeNow) {
 
   requestAnimationFrame(loop)
 }
+
+// color randomizer
+
+function randomColor() {
+  let letters = '0123456789abcdef'
+  let color = '#'
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)]
+  }
+  console.log(color)
+  return color
+}
+
+colorBtn.addEventListener('click', () => {
+  ctx.strokeStyle = randomColor()
+})
