@@ -9,9 +9,26 @@ const colorBtn = document.querySelector('.color-btn')
 // Some constants
 
 let cubeColor = '#d11f31'
-const velocityX = 0.6
-const velocityY = 0.4
-const velocityZ = 0.5
+
+let speedRangeX = document.getElementById('speedRangeX')
+let speedRangeY = document.getElementById('speedRangeY')
+let speedRangeZ = document.getElementById('speedRangeZ')
+
+let velocityX = parseFloat(speedRangeX.value)
+let velocityY = parseFloat(speedRangeY.value)
+let velocityZ = parseFloat(speedRangeZ.value)
+
+// Change speed
+
+speedRangeX.addEventListener('input', () => {
+  velocityX = parseFloat(speedRangeX.value)
+})
+speedRangeY.addEventListener('input', () => {
+  velocityY = parseFloat(speedRangeY.value)
+})
+speedRangeZ.addEventListener('input', () => {
+  velocityZ = parseFloat(speedRangeZ.value)
+})
 
 const w = canvas.width
 const h = canvas.height
