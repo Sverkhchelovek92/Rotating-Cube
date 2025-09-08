@@ -5,10 +5,12 @@ ctx.fillStyle = '#1f1f21'
 ctx.fillRect(0, 0, canvas.width, canvas.height)
 
 const colorBtn = document.querySelector('.color-btn')
+const gradientBtn = document.querySelector('.gradient-btn')
 
 // Some constants
 
 let cubeColor = '#d11f31'
+let gradientMode = false
 
 let speedRangeX = document.getElementById('speedRangeX')
 let speedRangeY = document.getElementById('speedRangeY')
@@ -165,3 +167,26 @@ function randomColor() {
 colorBtn.addEventListener('click', () => {
   ctx.strokeStyle = randomColor()
 })
+
+// HEX → RGB
+function hexToRgb(hex) {
+  let bigint = parseInt(hex.slice(1), 16)
+  return {
+    r: (bigint >> 16) & 255,
+    g: (bigint >> 8) & 255,
+    b: bigint & 255,
+  }
+}
+
+// RGB → HEX
+function rgbToHex(r, g, b) {
+  return (
+    '#' +
+    [r, g, b]
+      .map((x) => {
+        let hex = x.toString(16)
+        return hex.length === 1 ? '0' + hex : hex
+      })
+      .join('')
+  )
+}
