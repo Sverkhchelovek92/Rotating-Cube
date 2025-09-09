@@ -7,10 +7,16 @@ ctx.fillRect(0, 0, canvas.width, canvas.height)
 const colorBtn = document.querySelector('.color-btn')
 const gradientBtn = document.querySelector('.gradient-btn')
 
-// Some constants
+// Some variables
 
 let cubeColor = '#d11f31'
+
+// Gradient mode variables
 let gradientMode = false
+let currentColor = cubeColor
+let nextColor = randomColor()
+let t = 0
+let colorSpeed = 0.005
 
 let speedRangeX = document.getElementById('speedRangeX')
 let speedRangeY = document.getElementById('speedRangeY')
@@ -37,9 +43,13 @@ const h = canvas.height
 
 //
 
-ctx.strokeStyle = cubeColor
 ctx.lineWidth = w / 100
 ctx.lineCap = 'round'
+
+// линейная интерполяция
+function lerp(a, b, t) {
+  return a + (b - a) * t
+}
 
 // cube
 
@@ -96,6 +106,7 @@ function loop(timeNow) {
   timeLast = timeNow
 
   ctx.fillRect(0, 0, w, h)
+  ctx.strokeStyle = cubeColor
 
   // rotate z-axis
 
@@ -142,6 +153,22 @@ function loop(timeNow) {
     v.z = z + cz
   }
 
+  // if gradient mode is on
+  if (gradientMode) {
+    t += colorSpeed
+    if (t >= 1) {
+      t = 0
+      currentColor = nextColor
+      nextColor = randomColor()
+    }
+    let c1 = hexToRgb(currentColor)
+    let c2 = hexToRgb(nextColor)
+    let r = Math.floor(lerp(c1.r, c2.r, t))
+    let g = Math.floor(lerp(c1.g, c2.g, t))
+    let b = Math.floor(lerp(c1.b, c2.b, t))
+    cubeColor = rgbToHex(r, g, b)
+  }
+
   for (let edge of edges) {
     ctx.beginPath()
     ctx.moveTo(vertices[edge[0]].x, vertices[edge[0]].y)
@@ -160,12 +187,21 @@ function randomColor() {
   for (let i = 0; i < 6; i++) {
     color += letters[Math.floor(Math.random() * 16)]
   }
-  console.log(color)
   return color
 }
 
 colorBtn.addEventListener('click', () => {
-  ctx.strokeStyle = randomColor()
+  gradientMode = false
+  cubeColor = randomColor()
+  console.log('gradientMode:', gradientMode)
+})
+
+gradientBtn.addEventListener('click', () => {
+  gradientMode = true
+  currentColor = cubeColor
+  nextColor = randomColor()
+  t = 0
+  console.log('gradientMode:', gradientMode)
 })
 
 // HEX → RGB
